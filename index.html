@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Professional Payment Form</title>
+    <style>
+        body {
+            background: linear-gradient(to right, #dfe9f3, #ffffff);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 40px;
+        }
+
+        form {
+            background-color: #fff;
+            padding: 30px 40px;
+            border-radius: 12px;
+            max-width: 600px;
+            margin: auto;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+
+        h1, h2 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+
+        p, label, legend {
+            font-size: 1rem;
+            color: #34495e;
+            margin-bottom: 8px;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="number"],
+        input[type="password"],
+        input[type="date"],
+        textarea,
+        select {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            box-sizing: border-box;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            border-color: #2980b9;
+            outline: none;
+        }
+
+        textarea {
+            resize: vertical;
+        }
+
+        fieldset {
+            border: 2px solid #bdc3c7;
+            padding: 15px;
+            border-radius: 10px;
+            background-color: #f4f6f7;
+        }
+
+        input[type="radio"] {
+            margin: 0 10px 0 20px;
+        }
+
+        input[type="submit"] {
+            background-color: #2980b9;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #1f618d;
+        }
+
+        .error {
+            color: red;
+            font-size: 0.9rem;
+        }
+
+        .success {
+            color: green;
+            font-size: 1rem;
+            text-align: center;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <form id="paymentForm">
+        <h1>Payment Form</h1>
+        <p><i>Required fields are marked with *</i></p>
+
+        <h2>Contact Information</h2>
+        <p>Name: * <input type="text" name="name" id="name" required></p>
+
+        <fieldset>
+            <legend>Gender *</legend>
+            <label><input type="radio" name="gender" value="male" required> Male</label>
+            <label><input type="radio" name="gender" value="female" required> Female</label>
+        </fieldset>
+
+        <p>Address: <textarea name="address" id="address" cols="100" rows="4"></textarea></p>
+        <p>Email: * <input type="email" name="email" id="email" required></p>
+        <p>Pincode: <input type="number" name="pincode" id="pincode"></p>
+
+        <h2>Payment Information</h2>
+        <p>Card Type:
+            <select name="card_type" id="card_type" required>
+                <option value="">--Select a card type--</option>
+                <option value="visa">Visa</option>
+                <option value="rupay">Rupay</option>
+                <option value="mastercard">MasterCard</option>
+            </select>
+        </p>
+
+        <p>Card Number * <input type="number" name="card_number" id="card_number" required></p>
+        <p>Expiration Date * <input type="date" name="exp_date" id="exp_date" required></p>
+        <p>CVV * <input type="password" name="cvv" id="cvv" required></p>
+
+        <input type="submit" value="Pay Now">
+        <div id="formMessage" class="success"></div>
+    </form>
+
+    <script>
+        document.getElementById("paymentForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+
+            const name = document.getElementById("name").value.trim();
+            const email = document.getElementById("email").value.trim();
+            const cardNumber = document.getElementById("card_number").value.trim();
+            const cvv = document.getElementById("cvv").value.trim();
+            const expDate = document.getElementById("exp_date").value;
+            const cardType = document.getElementById("card_type").value;
+
+            let message = "";
+            let valid = true;
+
+            if (name.length < 2) {
+                message += "Name must be at least 2 characters long.<br>";
+                valid = false;
+            }
+
+            if (!email.includes("@")) {
+                message += "Please enter a valid email address.<br>";
+                valid = false;
+            }
+
+            if (cardNumber.length < 12) {
+                message += "Card number must be at least 12 digits.<br>";
+                valid = false;
+            }
+
+            if (cvv.length !== 3) {
+                message += "CVV must be 3 digits.<br>";
+                valid = false;
+            }
+
+            if (!cardType) {
+                message += "Please select a card type.<br>";
+                valid = false;
+            }
+
+            const formMessage = document.getElementById("formMessage");
+
+            if (valid) {
+                formMessage.innerHTML = "Payment successful! Thank you.";
+                formMessage.style.color = "green";
+                this.reset(); // reset form
+            } else {
+                formMessage.innerHTML = message;
+                formMessage.style.color = "red";
+            }
+        });
+    </script>
+</body>
+</html>
